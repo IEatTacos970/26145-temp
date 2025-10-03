@@ -29,8 +29,8 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
  * we will also need to adjust the "PIDF" coefficients with some that are a better fit for our application.
  */
 
-@TeleOp(name = "MechanumTeleOp", group = "!")
-public class MechanumTeleOp extends LinearOpMode {
+@TeleOp(name = "MainTeleOp", group = "!")
+public class MainTeleOp extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         // Declare our motors
@@ -47,6 +47,11 @@ public class MechanumTeleOp extends LinearOpMode {
         frontRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         backRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
 
+        frontLeftMotor.setZeroPowerBehavior(BRAKE);
+        backLeftMotor.setZeroPowerBehavior(BRAKE);
+        frontRightMotor.setZeroPowerBehavior(BRAKE);
+        backRightMotor.setZeroPowerBehavior(BRAKE);
+
         waitForStart();
 
         if (isStopRequested()) return;
@@ -60,10 +65,10 @@ public class MechanumTeleOp extends LinearOpMode {
             // This ensures all the powers maintain the same ratio,
             // but only if at least one is out of the range [-1, 1]
             double denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(rx), 1);
-            double frontLeftPower = (y + x + rx) / denominator;
-            double backLeftPower = (y - x + rx) / denominator;
-            double frontRightPower = (y - x - rx) / denominator;
-            double backRightPower = (y + x - rx) / denominator;
+            double frontLeftPower = ((y + x + rx) / denominator) /2;
+            double backLeftPower = ((y - x + rx) / denominator) /2;
+            double frontRightPower = ((y - x - rx) / denominator) /2;
+            double backRightPower = ((y + x - rx) / denominator) /2;
 
             frontLeftMotor.setPower(frontLeftPower);
             backLeftMotor.setPower(backLeftPower);
